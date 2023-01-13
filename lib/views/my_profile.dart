@@ -217,7 +217,7 @@ class _MyProfileState extends State<MyProfile> {
                       height: 30,
                     ),
                     Obx(() => authController.isProfileUploading.value
-                        ? Center(
+                        ? const Center(
                       child: CircularProgressIndicator(),
                     )
                         : greenButton('Update', () {
@@ -230,15 +230,15 @@ class _MyProfileState extends State<MyProfile> {
 
                       authController.isProfileUploading(true);
                       authController.storeUserInfo(
-                          selectedImage,
+                          // selectedImage,
                           nameController.text,
                           homeController.text,
-                          businessController.text,
-                          shopController.text,
-                      url: authController.myUser.value.image??"",
-                      homeLatLng: homeAddress,
-                        shoppingLatLng: shoppingAddress,
-                        businessLatLng: businessAddress
+                          // businessController.text,
+                          // shopController.text,
+                      // url: authController.myUser.value.image??"",
+                      // homeLatLng: homeAddress,
+                      //   shoppingLatLng: shoppingAddress,
+                      //   businessLatLng: businessAddress
                       );
                     })),
                   ],

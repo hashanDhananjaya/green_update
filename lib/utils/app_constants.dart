@@ -1,5 +1,5 @@
 class AppConstants{
- static const kGoogleApiKey = "YOUR-Map-KEy";
+ static const kGoogleApiKey = "AIzaSyCS9jHH-82oYxm8JKmcLs83ccO8JUTW1_s";
 
   static const String helloNiceToMeetYou = 'Hello, nice to meet you!';
   static const String getMovingWithGreenTaxi = 'Get moving with Green Taxi';

@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late LatLng destination;
   late LatLng source;
   final Set<Polyline> _polyline = {};
-  Set<Marker> markers = Set<Marker>();
+  Set<Marker> markers = <Marker>{};
   List<String> list = <String>[
     '**** **** **** 8789',
     '**** **** **** 8921',
@@ -58,9 +58,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String dropdownValue = '**** **** **** 8789';
-  final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
+  final CameraPosition _kGooglePlex = const CameraPosition(
+    target: LatLng(8.35, 80.7718),
+    zoom: 7.75,
   );
 
   GoogleMapController? myMapController;
@@ -77,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
             right: 0,
             bottom: 0,
             child: GoogleMap(
+              mapType: MapType.normal,
               markers: markers,
               polylines: polyline,
               zoomControlsEnabled: false,
@@ -105,14 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
       left: 0,
       right: 0,
       child: Obx(() => authController.myUser.value.name == null
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : Container(
               width: Get.width,
               height: Get.width * 0.5,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              decoration: BoxDecoration(color: Colors.white70),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              decoration: const BoxDecoration(color: Colors.white70),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -123,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: authController.myUser.value.image == null
-                            ? DecorationImage(
+                            ? const DecorationImage(
                                 image: AssetImage('assets/person.png'),
                                 fit: BoxFit.fill)
                             : DecorationImage(
@@ -140,19 +141,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       RichText(
                         text: TextSpan(children: [
-                          TextSpan(
-                              text: 'Good Morning, ',
+                          const TextSpan(
+                              text: 'Good Day, ',
                               style:
                                   TextStyle(color: Colors.black, fontSize: 14)),
                           TextSpan(
                               text: authController.myUser.value.name,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold)),
                         ]),
                       ),
-                      Text(
+                      const Text(
                         "Where are you going?",
                         style: TextStyle(
                             fontSize: 18,
@@ -180,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: Get.width,
         height: 50,
-        padding: EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.only(left: 15),
         decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -196,6 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: () async {
             Prediction? p =
                 await authController.showGoogleAutoComplete(context);
+            print("ppppppppppppppppppp");
+            print(p);
 
             String selectedPlace = p!.description!;
 
@@ -235,8 +238,8 @@ class _HomeScreenState extends State<HomeScreen> {
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.only(left: 10),
+            suffixIcon: const Padding(
+              padding: EdgeInsets.only(left: 10),
               child: Icon(
                 Icons.search,
               ),
@@ -256,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         width: Get.width,
         height: 50,
-        padding: EdgeInsets.only(left: 15),
+        padding: const EdgeInsets.only(left: 15),
         decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -282,8 +285,8 @@ class _HomeScreenState extends State<HomeScreen> {
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
-            suffixIcon: Padding(
-              padding: const EdgeInsets.only(left: 10),
+            suffixIcon: const Padding(
+              padding: EdgeInsets.only(left: 10),
               child: Icon(
                 Icons.search,
               ),
@@ -296,10 +299,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildCurrentLocationIcon() {
-    return Align(
+    return const Align(
       alignment: Alignment.bottomRight,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 30, right: 8),
+        padding: EdgeInsets.only(bottom: 30, right: 8),
         child: CircleAvatar(
           radius: 20,
           backgroundColor: Colors.green,
@@ -313,10 +316,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildNotificationIcon() {
-    return Align(
+    return const Align(
       alignment: Alignment.bottomLeft,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 30, left: 8),
+        padding: EdgeInsets.only(bottom: 30, left: 8),
         child: CircleAvatar(
           radius: 20,
           backgroundColor: Colors.white,
@@ -343,7 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   spreadRadius: 4,
                   blurRadius: 10)
             ],
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(12), topLeft: Radius.circular(12))),
         child: Center(
           child: Container(
@@ -367,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox(
       height: height,
       child: ListTile(
-        contentPadding: EdgeInsets.all(0),
+        contentPadding: const EdgeInsets.all(0),
         // minVerticalPadding: 0,
         dense: true,
         onTap: () => onPressed(),
@@ -403,7 +406,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           InkWell(
             onTap: () {
-              Get.to(() => const MyProfile());
+              // Get.to(() => const MyProfile());
             },
             child: SizedBox(
               height: 150,
@@ -460,7 +463,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 20,
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
                 buildDrawerItem(title: 'Payment History', onPressed: () => Get.to(()=> PaymentScreen())),
@@ -478,10 +481,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Spacer(),
-          Divider(),
+          const Spacer(),
+          const Divider(),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
             child: Column(
               children: [
                 buildDrawerItem(
@@ -558,8 +561,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.bottomSheet(Container(
       width: Get.width,
       height: Get.height * 0.5,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(8), topRight: Radius.circular(8)),
           color: Colors.white),
@@ -570,7 +573,7 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 10,
           ),
-          Text(
+          const Text(
             "Select Your Location",
             style: TextStyle(
                 color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
@@ -578,131 +581,132 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 20,
           ),
-          Text(
-            "Home Address",
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          InkWell(
-            onTap: () async {
-              Get.back();
-              source = authController.myUser.value.homeAddress!;
-              sourceController.text = authController.myUser.value.hAddress!;
-
-              if (markers.length >= 2) {
-                markers.remove(markers.last);
-              }
-              markers.add(Marker(
-                  markerId: MarkerId(authController.myUser.value.hAddress!),
-                  infoWindow: InfoWindow(
-                    title: 'Source: ${authController.myUser.value.hAddress!}',
-                  ),
-                  position: source));
-
-              await getPolylines(source, destination);
-
-              // drawPolyline(place);
-
-              myMapController!.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: source, zoom: 14)));
-              setState(() {});
-
-              buildRideConfirmationSheet();
-            },
-            child: Container(
-              width: Get.width,
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
-                        spreadRadius: 4,
-                        blurRadius: 10)
-                  ]),
-              child: Row(
-                children: [
-                  Text(
-                    authController.myUser.value.hAddress!,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.start,
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            "Business Address",
-            style: TextStyle(
-                color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          InkWell(
-            onTap: () async {
-              Get.back();
-              source = authController.myUser.value.bussinessAddres!;
-              sourceController.text = authController.myUser.value.bAddress!;
-
-              if (markers.length >= 2) {
-                markers.remove(markers.last);
-              }
-              markers.add(Marker(
-                  markerId: MarkerId(authController.myUser.value.bAddress!),
-                  infoWindow: InfoWindow(
-                    title: 'Source: ${authController.myUser.value.bAddress!}',
-                  ),
-                  position: source));
-
-              await getPolylines(source, destination);
-
-              // drawPolyline(place);
-
-              myMapController!.animateCamera(CameraUpdate.newCameraPosition(
-                  CameraPosition(target: source, zoom: 14)));
-              setState(() {});
-
-              buildRideConfirmationSheet();
-            },
-            child: Container(
-              width: Get.width,
-              height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
-                        spreadRadius: 4,
-                        blurRadius: 10)
-                  ]),
-              child: Row(
-                children: [
-                  Text(
-                    authController.myUser.value.bAddress!,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600),
-                    textAlign: TextAlign.start,
-                  ),
-                ],
-              ),
-            ),
-          ),
+          // const Text(
+          //   "Home Address",
+          //   style: TextStyle(
+          //       color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // InkWell(
+          //   onTap: () async {
+          //     Get.back();
+          //     source = authController.myUser.value.homeAddress!;
+          //     sourceController.text = authController.myUser.value.hAddress!;
+          //
+          //     if (markers.length >= 2) {
+          //       markers.remove(markers.last);
+          //     }
+          //     markers.add(Marker(
+          //         markerId: MarkerId(authController.myUser.value.hAddress!),
+          //         infoWindow: InfoWindow(
+          //           title: 'Source: ${authController.myUser.value.hAddress!}',
+          //         ),
+          //         position: source));
+          //
+          //     await getPolylines(source, destination);
+          //
+          //     // drawPolyline(place);
+          //
+          //     myMapController!.animateCamera(CameraUpdate.newCameraPosition(
+          //         CameraPosition(target: source, zoom: 14)));
+          //     setState(() {});
+          //
+          //     buildRideConfirmationSheet();
+          //   },
+          //   child: Container(
+          //     width: Get.width,
+          //     height: 50,
+          //     padding: const EdgeInsets.symmetric(horizontal: 10),
+          //     decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(8),
+          //         boxShadow: [
+          //           BoxShadow(
+          //               color: Colors.black.withOpacity(0.04),
+          //               spreadRadius: 4,
+          //               blurRadius: 10)
+          //         ]),
+          //     child: Row(
+          //       children: [
+          //         Text(
+          //           authController.myUser.value.hAddress!,
+          //           style: const TextStyle(
+          //               color: Colors.black,
+          //               fontSize: 12,
+          //               fontWeight: FontWeight.w600),
+          //           textAlign: TextAlign.start,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
+          // const Text(
+          //   "Business Address",
+          //   style: TextStyle(
+          //       color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
+          // ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
+          // InkWell(
+          //   onTap: () async {
+          //     Get.back();
+          //     source = authController.myUser.value.bussinessAddres!;
+          //     sourceController.text = authController.myUser.value.bAddress!;
+          //
+          //     if (markers.length >= 2) {
+          //       markers.remove(markers.last);
+          //     }
+          //     markers.add(Marker(
+          //         markerId: MarkerId(authController.myUser.value.bAddress!),
+          //         infoWindow: InfoWindow(
+          //           title: 'Source: ${authController.myUser.value.bAddress!}',
+          //         ),
+          //         position: source));
+          //
+          //     await getPolylines(source, destination);
+          //
+          //     // drawPolyline(place);
+          //
+          //     myMapController!.animateCamera(CameraUpdate.newCameraPosition(
+          //         CameraPosition(target: source, zoom: 14)));
+          //     setState(() {});
+          //
+          //     buildRideConfirmationSheet();
+          //   },
+          //   child: Container(
+          //     width: Get.width,
+          //     height: 50,
+          //     padding: const EdgeInsets.symmetric(horizontal: 10),
+          //     decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(8),
+          //         boxShadow: [
+          //           BoxShadow(
+          //               color: Colors.black.withOpacity(0.04),
+          //               spreadRadius: 4,
+          //               blurRadius: 10)
+          //         ]),
+          //     child: Row(
+          //       children: const [
+          //         Text(
+          //           // authController.myUser.value.bAddress!,
+          //           "Galle",
+          //           style: TextStyle(
+          //               color: Colors.black,
+          //               fontSize: 12,
+          //               fontWeight: FontWeight.w600),
+          //           textAlign: TextAlign.start,
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           const SizedBox(
             height: 20,
           ),
@@ -740,7 +744,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               width: Get.width,
               height: 50,
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -752,7 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ]),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: const [
                   Text(
                     "Search for Address",
                     style: TextStyle(
@@ -774,8 +778,8 @@ class _HomeScreenState extends State<HomeScreen> {
     Get.bottomSheet(Container(
       width: Get.width,
       height: Get.height * 0.4,
-      padding: EdgeInsets.only(left: 20),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.only(left: 20),
+      decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(12), topLeft: Radius.circular(12)),
@@ -808,8 +812,8 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(
             height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
+          const Padding(
+            padding: EdgeInsets.only(right: 20),
             child: Divider(),
           ),
           Padding(
@@ -820,12 +824,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(child: buildPaymentCardWidget()),
                 MaterialButton(
                   onPressed: () {},
+                  color: AppColors.greenColor,
+                  shape: const StadiumBorder(),
                   child: textWidget(
                     text: 'Confirm',
                     color: Colors.white,
                   ),
-                  color: AppColors.greenColor,
-                  shape: StadiumBorder(),
                 )
               ],
             ),
@@ -838,7 +842,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int selectedRide = 0;
 
   buildDriversList() {
-    return Container(
+    return SizedBox(
       height: 90,
       width: Get.width,
       child: StatefulBuilder(builder: (context, set) {
@@ -862,25 +866,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   buildDriverCard(bool selected) {
     return Container(
-      margin: EdgeInsets.only(right: 8, left: 8, top: 4, bottom: 4),
+      margin: const EdgeInsets.only(right: 8, left: 8, top: 4, bottom: 4),
       height: 85,
       width: 165,
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
                 color: selected
-                    ? Color(0xff2DBB54).withOpacity(0.2)
+                    ? const Color(0xff2DBB54).withOpacity(0.2)
                     : Colors.grey.withOpacity(0.2),
-                offset: Offset(0, 5),
+                offset: const Offset(0, 5),
                 blurRadius: 5,
                 spreadRadius: 1)
           ],
           borderRadius: BorderRadius.circular(12),
-          color: selected ? Color(0xff2DBB54) : Colors.grey),
+          color: selected ? const Color(0xff2DBB54) : Colors.grey),
       child: Stack(
         children: [
           Container(
-            padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+            padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -911,39 +915,37 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildPaymentCardWidget() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            'assets/visa.png',
-            width: 40,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          DropdownButton<String>(
-            value: dropdownValue,
-            icon: const Icon(Icons.keyboard_arrow_down),
-            elevation: 16,
-            style: const TextStyle(color: Colors.deepPurple),
-            underline: Container(),
-            onChanged: (String? value) {
-              // This is called when the user selects an item.
-              setState(() {
-                dropdownValue = value!;
-              });
-            },
-            items: list.map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: textWidget(text: value),
-              );
-            }).toList(),
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/visa.png',
+          width: 40,
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        DropdownButton<String>(
+          value: dropdownValue,
+          icon: const Icon(Icons.keyboard_arrow_down),
+          elevation: 16,
+          style: const TextStyle(color: Colors.deepPurple),
+          underline: Container(),
+          onChanged: (String? value) {
+            // This is called when the user selects an item.
+            setState(() {
+              dropdownValue = value!;
+            });
+          },
+          items: list.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: textWidget(text: value),
+            );
+          }).toList(),
+        )
+      ],
     );
   }
 }

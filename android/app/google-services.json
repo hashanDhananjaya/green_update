@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "306795930501",
-    "project_id": "greenupdate-4ab0c",
-    "storage_bucket": "greenupdate-4ab0c.appspot.com"
+    "project_number": "389399473100",
+    "project_id": "greenupdated",
+    "storage_bucket": "greenupdated.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:306795930501:android:b644ed92310cd5b4d79aec",
+        "mobilesdk_app_id": "1:389399473100:android:ca5eff54f1289f2bbccb69",
         "android_client_info": {
           "package_name": "com.example.green_update"
         }
       },
       "oauth_client": [
         {
-          "client_id": "306795930501-04a289icinp8m61b6j7svs274dmdej61.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.green_update",
-            "certificate_hash": "47f5a7efbe5ba0fc146fd8ab004c644d1b45a494"
-          }
-        },
-        {
-          "client_id": "306795930501-tc1d2ddk1u08d355ecjin18ci0i6k580.apps.googleusercontent.com",
+          "client_id": "389399473100-3hjr4cjpps0pj5sq4lse4cv1pmnjtetm.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAVKs4HUDLAaZs16MF1KwV38HkJbVY2g1o"
+          "current_key": "AIzaSyBgEZ5rnRsKyUw-_V7lLOXl77O0uCdcVsg"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "306795930501-tc1d2ddk1u08d355ecjin18ci0i6k580.apps.googleusercontent.com",
+              "client_id": "389399473100-3hjr4cjpps0pj5sq4lse4cv1pmnjtetm.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
