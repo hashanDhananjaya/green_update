@@ -32,10 +32,13 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
 
   final ImagePicker _picker = ImagePicker();
   File? selectedImage;
+  // String businessAddressText = 'Colombo';
+  String homeAddressText = 'Colombo';
+  // String shoppingAddressText = 'Colombo';
 
   late LatLng homeAddress;
-  late LatLng businessAddress;
-  late LatLng shoppingAddress;
+  // late LatLng businessAddress;
+  // late LatLng shoppingAddress;
   getImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
@@ -52,7 +55,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
+            SizedBox(
               height: Get.height * 0.4,
               child: Stack(
                 children: [
@@ -67,11 +70,11 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                           ? Container(
                               width: 120,
                               height: 120,
-                              margin: EdgeInsets.only(bottom: 20),
-                              decoration: BoxDecoration(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              decoration: const BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Color(0xffD6D6D6)),
-                              child: Center(
+                              child: const Center(
                                 child: Icon(
                                   Icons.camera_alt_outlined,
                                   size: 40,
@@ -82,13 +85,13 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
                           : Container(
                               width: 120,
                               height: 120,
-                              margin: EdgeInsets.only(bottom: 20),
+                              margin: const EdgeInsets.only(bottom: 20),
                               decoration: BoxDecoration(
                                   image: DecorationImage(
                                       image: FileImage(selectedImage!),
                                       fit: BoxFit.fill),
                                   shape: BoxShape.circle,
-                                  color: Color(0xffD6D6D6)),
+                                  color: const Color(0xffD6D6D6)),
                             ),
                     ),
                   ),
@@ -99,118 +102,124 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
               height: 20,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+              padding: const EdgeInsets.symmetric(horizontal: 23),
               child: Form(
                 key: formKey,
                 child: Column(
                   children: [
                     TextFieldWidget(
-                        'Name', Icons.person_outlined, nameController,(String? input){
+                        'Name', Icons.person_outlined, nameController,
+                        (String? input) {
+                      if (input!.isEmpty) {
+                        return 'Name is required!';
+                      }
 
-                          if(input!.isEmpty){
-                            return 'Name is required!';
-                          }
+                      if (input.length < 5) {
+                        return 'Please enter a valid name!';
+                      }
 
-                          if(input.length<5){
-                            return 'Please enter a valid name!';
-                          }
-
-                          return null;
-
+                      return null;
                     }),
                     const SizedBox(
                       height: 10,
                     ),
                     TextFieldWidget(
-                        'Home Address', Icons.home_outlined, homeController,(String? input){
+                      'Home Address',
+                      Icons.home_outlined,
+                      homeController,
+                      (String? input) {
+                        if (input!.isEmpty) {
+                          return 'Home Address is required!';
+                        }
 
-                          if(input!.isEmpty){
-                            return 'Home Address is required!';
-                          }
-
-                          return null;
-
-                    },onTap: ()async{
-                      Prediction? p = await  authController.showGoogleAutoComplete(context);
-
-                      /// now let's translate this selected address and convert it to latlng obj
-
-                      homeAddress = await authController.buildLatLngFromAddress(p!.description!);
-                      homeController.text = p.description!;
-                      ///store this information into firebase together once update is clicked
-
-
-
-                    },readOnly: true),
-                    const SizedBox(
-                      height: 10,
+                        return null;
+                      },
+                      //     onTap: ()async{
+                      //   Prediction? p = await  authController.showGoogleAutoComplete(context);
+                      //
+                      //   /// now let's translate this selected address and convert it to latlng obj
+                      //
+                      //   homeAddress = await authController.buildLatLngFromAddress(p!.description!);
+                      //   homeController.text = p.description!;
+                      //   ///store this information into firebase together once update is clicked
+                      //
+                      //
+                      //
+                      // },readOnly: true
                     ),
-                    TextFieldWidget('Business Address', Icons.card_travel,
-                        businessController,(String? input){
-                          if(input!.isEmpty){
-                            return 'Business Address is required!';
-                          }
-
-                          return null;
-                        },onTap: ()async{
-                          Prediction? p = await  authController.showGoogleAutoComplete(context);
-
-                          /// now let's translate this selected address and convert it to latlng obj
-
-                          businessAddress = await authController.buildLatLngFromAddress(p!.description!);
-                          businessController.text = p.description!;
-                          ///store this information into firebase together once update is clicked
-
-                        },readOnly: true),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    TextFieldWidget('Shopping Center',
-                        Icons.shopping_cart_outlined, shopController,(String? input){
-                          if(input!.isEmpty){
-                            return 'Shopping Center is required!';
-                          }
-
-                          return null;
-                        },onTap: ()async{
-              Prediction? p = await  authController.showGoogleAutoComplete(context);
-
-              /// now let's translate this selected address and convert it to latlng obj
-
-              shoppingAddress = await authController.buildLatLngFromAddress(p!.description!);
-              shopController.text = p.description!;
-              ///store this information into firebase together once update is clicked
-
-              },readOnly: true),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // TextFieldWidget('Business Address', Icons.card_travel,
+                    //     businessController, (String? input) async {
+                    //   if (input!.isEmpty) {
+                    //     return 'Business Address is required!';
+                    //   }
+                    //   print("input");
+                    //   print(input);
+                    //   businessAddress = await authController.buildLatLngFromAddress(input.toString());
+                    //
+                    //   return null;
+                    // }
+                    //     // ,onTap: ()async{
+                    //     //   Prediction? p = await  authController.showGoogleAutoComplete(context);
+                    //     //
+                    //     //   /// now let's translate this selected address and convert it to latlng obj
+                    //     //
+                    //     //   businessAddress = await authController.buildLatLngFromAddress(p!.description!);
+                    //     //   businessController.text = p.description!;
+                    //     //   ///store this information into firebase together once update is clicked
+                    //     //
+                    //     // },readOnly: true
+                    //     ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    // TextFieldWidget(
+                    //     'Shopping Center',
+                    //     Icons.shopping_cart_outlined,
+                    //     shopController, (String? input) {
+                    //   if (input!.isEmpty) {
+                    //     return 'Shopping Center is required!';
+                    //   }
+                    //
+                    //   return null;
+                    // }
+                    //     //           ,onTap: ()async{
+                    //     // Prediction? p = await  authController.showGoogleAutoComplete(context);
+                    //     //
+                    //     // /// now let's translate this selected address and convert it to latlng obj
+                    //     //
+                    //     // shoppingAddress = await authController.buildLatLngFromAddress(p!.description!);
+                    //     // shopController.text = p.description!;
+                    //     // ///store this information into firebase together once update is clicked
+                    //     //
+                    //     // },readOnly: true
+                    //     ),
                     const SizedBox(
                       height: 30,
                     ),
                     Obx(() => authController.isProfileUploading.value
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(),
                           )
                         : greenButton('Submit', () {
-
-
-                            if(!formKey.currentState!.validate()){
+                            if (!formKey.currentState!.validate()) {
                               return;
                             }
 
-                            if (selectedImage == null) {
-                              Get.snackbar('Warning', 'Please add your image');
-                              return;
-                            }
+                            selectedImage ??= File('assets/person.png');
                             authController.isProfileUploading(true);
                             authController.storeUserInfo(
-                                selectedImage,
+                                // selectedImage,
                                 nameController.text,
                                 homeController.text,
-                                businessController.text,
-                                shopController.text,
-                                businessLatLng: businessAddress,
-                              homeLatLng: homeAddress,
-                              shoppingLatLng: shoppingAddress
-                              );
+                                // businessController.text,
+                                // shopController.text,
+                                // businessLatLng: businessAddress,
+                                // homeLatLng: homeAddress,
+                                // shoppingLatLng: shoppingAddress
+                            );
                           })),
                   ],
                 ),
@@ -222,8 +231,9 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
     );
   }
 
-  TextFieldWidget(
-      String title, IconData iconData, TextEditingController controller,Function validator,{Function? onTap,bool readOnly = false}) {
+  TextFieldWidget(String title, IconData iconData,
+      TextEditingController controller, Function validator,
+      {Function? onTap, bool readOnly = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -232,7 +242,7 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
           style: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: Color(0xffA7A7A7)),
+              color: const Color(0xffA7A7A7)),
         ),
         const SizedBox(
           height: 6,
@@ -251,8 +261,8 @@ class _ProfileSettingScreenState extends State<ProfileSettingScreen> {
               borderRadius: BorderRadius.circular(8)),
           child: TextFormField(
             readOnly: readOnly,
-            onTap: ()=> onTap!(),
-            validator: (input)=> validator(input),
+            onTap: () => onTap!(),
+            validator: (input) => validator(input),
             controller: controller,
             style: GoogleFonts.poppins(
                 fontSize: 14,
