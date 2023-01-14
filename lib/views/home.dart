@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -31,6 +33,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? _mapStyle;
 
+  final Completer<GoogleMapController> _controller = Completer();
   AuthController authController = Get.find<AuthController>();
 
   late LatLng destination;
@@ -62,6 +65,25 @@ class _HomeScreenState extends State<HomeScreen> {
     target: LatLng(8.35, 80.7718),
     zoom: 7.75,
   );
+
+  Future<Position> getUserCurrentLocation() async {
+    await Geolocator.requestPermission()
+        .then((value) {})
+        .onError((error, stackTrace) async {
+      await Geolocator.requestPermission();
+      print("ERROR : $error");
+    });
+    return await Geolocator.getCurrentPosition();
+  }
+
+  final List<Marker> _markers = <Marker>[
+    const Marker(
+        markerId: MarkerId('1'),
+        position: LatLng(20.42796133580664, 75.885749655962),
+        infoWindow: InfoWindow(
+          title: 'My Position',
+        )),
+  ];
 
   GoogleMapController? myMapController;
 
@@ -299,16 +321,45 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildCurrentLocationIcon() {
-    return const Align(
+    return Align(
       alignment: Alignment.bottomRight,
       child: Padding(
-        padding: EdgeInsets.only(bottom: 30, right: 8),
-        child: CircleAvatar(
-          radius: 20,
-          backgroundColor: Colors.green,
-          child: Icon(
-            Icons.my_location,
-            color: Colors.white,
+        padding: const EdgeInsets.only(bottom: 30, right: 8),
+        child: GestureDetector(
+          onTap: () async {
+            getUserCurrentLocation().then((value) async {
+              print("${value.latitude} ${value.longitude}");
+
+              // marker added for current users location
+              _markers.add(
+                  Marker(
+                    markerId: const MarkerId("2"),
+                    position: LatLng(value.latitude, value.longitude),
+                    infoWindow: const InfoWindow(
+                      title: 'My Current Location',
+                    ),
+                  )
+              );
+
+              // specified current users location
+              CameraPosition cameraPosition = CameraPosition(
+                target: LatLng(value.latitude, value.longitude),
+                zoom: 14,
+              );
+
+              final GoogleMapController controller = await _controller.future;
+              controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+              setState(() {
+              });
+            });
+          },
+          child: const CircleAvatar(
+            radius: 20,
+            backgroundColor: Colors.green,
+            child: Icon(
+              Icons.my_location,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
@@ -466,18 +517,20 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                buildDrawerItem(title: 'Payment History', onPressed: () => Get.to(()=> PaymentScreen())),
+                buildDrawerItem(
+                    title: 'Payment History',
+                    onPressed: () => Get.to(() => PaymentScreen())),
                 buildDrawerItem(
                     title: 'Ride History', onPressed: () {}, isVisible: true),
                 buildDrawerItem(title: 'Invite Friends', onPressed: () {}),
                 buildDrawerItem(title: 'Promo Codes', onPressed: () {}),
                 buildDrawerItem(title: 'Settings', onPressed: () {}),
                 buildDrawerItem(title: 'Support', onPressed: () {}),
-                buildDrawerItem(title: 'Log Out', onPressed: () {
-
-                  FirebaseAuth.instance.signOut();
-
-                }),
+                buildDrawerItem(
+                    title: 'Log Out',
+                    onPressed: () {
+                      FirebaseAuth.instance.signOut();
+                    }),
               ],
             ),
           ),
@@ -884,7 +937,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Stack(
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+            padding:
+                const EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

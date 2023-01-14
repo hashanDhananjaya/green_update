@@ -28,9 +28,9 @@ class _VerificaitonPendingScreenState extends State<VerificaitonPendingScreen> {
           Expanded(child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: const [
               Text('Verification Pending',style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600,color: Colors.black),),
-              const SizedBox(height: 20,),
+              SizedBox(height: 20,),
 
 
               Text('Your document is still pending for verification. Once it’s all verified you start getting rides. please sit tight',style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Color(0xff7D7D7D)),textAlign: TextAlign.center,),

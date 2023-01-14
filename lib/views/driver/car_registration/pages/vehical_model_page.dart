@@ -16,16 +16,10 @@ class _VehicalModelPageState extends State<VehicalModelPage> {
 
 
   List<String> vehicalModel = [
-    'Amanti',
-    'Borrego',
-    'Cadenza',
-    'Forte',
-    'K900',
-    'Niro',
-    'Optima',
-    'Rio',
-    'Rondo',
-    
+    'Nissan',
+    'Toyota',
+    'Benz',
+    'BMW',
   ];
 
   @override

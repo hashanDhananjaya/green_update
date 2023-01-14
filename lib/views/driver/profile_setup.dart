@@ -67,7 +67,7 @@ class _DriverProfileSetupState extends State<DriverProfileSetup> {
                             ],
                             shape: BoxShape.circle,
                             color:Colors.white),
-                        child: Center(
+                        child: const Center(
                           child: Icon(
                             Icons.camera_alt_outlined,
                             size: 40,
@@ -78,7 +78,7 @@ class _DriverProfileSetupState extends State<DriverProfileSetup> {
                           : Container(
                         width: 120,
                         height: 120,
-                        margin: EdgeInsets.only(bottom: 20),
+                        margin: const EdgeInsets.only(bottom: 20),
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: FileImage(selectedImage!),
@@ -95,7 +95,7 @@ class _DriverProfileSetupState extends State<DriverProfileSetup> {
               height: 80,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+              padding: const EdgeInsets.symmetric(horizontal: 23),
               child: Form(
                 key: formKey,
                 child: Column(
@@ -141,7 +141,7 @@ class _DriverProfileSetupState extends State<DriverProfileSetup> {
                       height: 30,
                     ),
                     Obx(() => authController.isProfileUploading.value
-                        ? Center(
+                        ? const Center(
                       child: CircularProgressIndicator(),
                     )
                         : greenButton('Submit', () {
@@ -150,18 +150,14 @@ class _DriverProfileSetupState extends State<DriverProfileSetup> {
                       if(!formKey.currentState!.validate()){
                         return;
                       }
+                      print("Submit");
 
-                      if (selectedImage == null) {
-                        Get.snackbar('Warning', 'Please add your image');
-                        return;
-                      }
+                      selectedImage ??= File('assets/driver.png');
                       authController.isProfileUploading(true);
                       authController.storeDriverProfile(
                           selectedImage!,
                           nameController.text,
                           emailController.text,
-
-
                       );
                     })),
                   ],

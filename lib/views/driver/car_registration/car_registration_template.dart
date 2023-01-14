@@ -11,6 +11,7 @@ import 'package:green_update/views/driver/car_registration/pages/vehical_model_p
 import 'package:green_update/views/driver/car_registration/pages/vehical_model_year_page.dart';
 import 'package:green_update/views/driver/car_registration/pages/vehical_number_page.dart';
 import 'package:green_update/views/driver/car_registration/pages/vehical_type_page.dart';
+import 'package:green_update/views/home.dart';
 // import 'package:green_taxi/controller/auth_controller.dart';
 // import 'package:green_taxi/utils/app_colors.dart';
 // import 'package:green_taxi/views/driver/car_registration/pages/document_uploaded_page.dart';
@@ -39,15 +40,15 @@ class CarRegistrationTemplate extends StatefulWidget {
 class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
 
 
-  String selectedLocation = '';
-  String selectedVehicalType =  '';
-  String selectedVehicalMake =  '';
+  // String selectedLocation = '';
+  // String selectedVehicalType =  '';
+  // String selectedVehicalMake =  '';
   String selectedVehicalModel =  '';
-  String selectModelYear = '';
+  // String selectModelYear = '';
   PageController pageController = PageController();
   TextEditingController vehicalNumberController = TextEditingController();
   String vehicalColor = '';
-  File? document;
+  // File? document;
 
 
 
@@ -69,32 +70,32 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                 currentPage = page;
               },
               controller: pageController,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               children: [
 
-                LocationPage(selectedLocation: selectedLocation,onSelect: (String location){
-                  setState(() {
-                    selectedLocation = location;
-                  });
-                },),
+                // LocationPage(selectedLocation: selectedLocation,onSelect: (String location){
+                //   setState(() {
+                //     selectedLocation = location;
+                //   });
+                // },),
 
-                VehicalTypePage(
-                  selectedVehical: selectedVehicalType,
-                  onSelect: (String vehicalType){
-                    setState(() {
-                      selectedVehicalType = vehicalType;
-                    });
-                  },
-                ),
+                // VehicalTypePage(
+                //   selectedVehical: selectedVehicalType,
+                //   onSelect: (String vehicalType){
+                //     setState(() {
+                //       selectedVehicalType = vehicalType;
+                //     });
+                //   },
+                // ),
 
-                VehicalMakePage(
-                  selectedVehical: selectedVehicalMake,
-                  onSelect: (String vehicalMake){
-                    setState(() {
-                      selectedVehicalMake = vehicalMake;
-                    });
-                  },
-                ),
+                // VehicalMakePage(
+                //   selectedVehical: selectedVehicalMake,
+                //   onSelect: (String vehicalMake){
+                //     setState(() {
+                //       selectedVehicalMake = vehicalMake;
+                //     });
+                //   },
+                // ),
 
                 VehicalModelPage(
                   selectedModel: selectedVehicalModel,
@@ -104,27 +105,27 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
                     });
                   },
                 ),
-                VehicalModelYearPage(
-                  onSelect: (int year){
-                    setState(() {
-                      selectModelYear = year.toString();
-                    });
-                  },
-                ),
+                // VehicalModelYearPage(
+                //   onSelect: (int year){
+                //     setState(() {
+                //       selectModelYear = year.toString();
+                //     });
+                //   },
+                // ),
 
                 VehicalNumberPage(
                   controller: vehicalNumberController,
                 ),
 
-                VehicalColorPage(
-                  onColorSelected: (String selectedColor){
-                    vehicalColor = selectedColor;
-                  },
-                ),
-                UploadDocumentPage(onImageSelected: (File image){
-                  document = image;
-                },),
-                DocumentUploadedPage()
+                // VehicalColorPage(
+                //   onColorSelected: (String selectedColor){
+                //     vehicalColor = selectedColor;
+                //   },
+                // ),
+                // UploadDocumentPage(onImageSelected: (File image){
+                //   document = image;
+                // },),
+                // DocumentUploadedPage()
               ],
             ),
           ),),
@@ -133,18 +134,20 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
               alignment: Alignment.bottomRight,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Obx(()=> isUploading.value? Center(child: CircularProgressIndicator(),): FloatingActionButton(onPressed: (){
+                child: Obx(()=> isUploading.value? const Center(child: CircularProgressIndicator(),): FloatingActionButton(onPressed: (){
 
 
-                  if(currentPage<8){
+                  if(currentPage<1){
+                    print("IFIFIFIFIF");
                     pageController.animateToPage(currentPage+1, duration: const Duration(seconds: 1), curve: Curves.easeIn);
 
                   }else{
+                    print("ELSEELSELES");
                     uploadDriverCarEntry();
                   }
 
 
-                },child: Icon(Icons.arrow_forward,color: Colors.white,),backgroundColor: AppColors.greenColor,)),
+                },backgroundColor: AppColors.greenColor,child: const Icon(Icons.arrow_forward,color: Colors.white,),)),
               )),
 
           
@@ -159,21 +162,22 @@ class _CarRegistrationTemplateState extends State<CarRegistrationTemplate> {
   void uploadDriverCarEntry() async{
 
     isUploading(true);
-    String imageUrl = await Get.find<AuthController>().uploadImage(document!);
+    // String imageUrl = await Get.find<AuthController>().uploadImage(document!);
 
     Map<String,dynamic> carData = {
-      'country': selectedLocation,
-      'vehicle_type': selectedVehicalType,
-      'vehicle_make': selectedVehicalMake,
+      // 'country': selectedLocation,
+      // 'vehicle_type': selectedVehicalType,
+      // 'vehicle_make': selectedVehicalMake,
       'vehicle_model': selectedVehicalModel,
-      'vehicle_year': selectModelYear,
+      // 'vehicle_year': selectModelYear,
       'vehicle_number': vehicalNumberController.text.trim(),
-      'vehicle_color': vehicalColor,
-      'document': imageUrl
+      // 'vehicle_color': vehicalColor,
+      // 'document': imageUrl
     };
 
     await Get.find<AuthController>().uploadCarEntry(carData);
     isUploading(false);
-    Get.off(()=>VerificaitonPendingScreen());
+    // Get.off(()=>const VerificaitonPendingScreen());
+    Get.off(()=>const HomeScreen());
   }
 }
