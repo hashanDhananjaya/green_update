@@ -33,7 +33,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String? _mapStyle;
 
-  final Completer<GoogleMapController> _controller = Completer();
+  // final Completer<GoogleMapController> _controller = Completer();
   AuthController authController = Get.find<AuthController>();
 
   late LatLng destination;
@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
 
     loadCustomMarker();
+    loadCurrentLocationMarker();
   }
 
   String dropdownValue = '**** **** **** 8789';
@@ -66,24 +67,24 @@ class _HomeScreenState extends State<HomeScreen> {
     zoom: 7.75,
   );
 
-  Future<Position> getUserCurrentLocation() async {
-    await Geolocator.requestPermission()
-        .then((value) {})
-        .onError((error, stackTrace) async {
-      await Geolocator.requestPermission();
-      print("ERROR : $error");
-    });
-    return await Geolocator.getCurrentPosition();
-  }
+  // Future<Position> getUserCurrentLocation() async {
+  //   await Geolocator.requestPermission()
+  //       .then((value) {})
+  //       .onError((error, stackTrace) async {
+  //     await Geolocator.requestPermission();
+  //     print("ERROR : $error");
+  //   });
+  //   return await Geolocator.getCurrentPosition();
+  // }
 
-  final List<Marker> _markers = <Marker>[
-    const Marker(
-        markerId: MarkerId('1'),
-        position: LatLng(20.42796133580664, 75.885749655962),
-        infoWindow: InfoWindow(
-          title: 'My Position',
-        )),
-  ];
+  // final List<Marker> _markers = <Marker>[
+  //   const Marker(
+  //       markerId: MarkerId('1'),
+  //       position: LatLng(20.42796133580664, 75.885749655962),
+  //       infoWindow: InfoWindow(
+  //         title: 'My Position',
+  //       )),
+  // ];
 
   GoogleMapController? myMapController;
 
@@ -219,8 +220,6 @@ class _HomeScreenState extends State<HomeScreen> {
           onTap: () async {
             Prediction? p =
                 await authController.showGoogleAutoComplete(context);
-            print("ppppppppppppppppppp");
-            print(p);
 
             String selectedPlace = p!.description!;
 
@@ -327,30 +326,29 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.only(bottom: 30, right: 8),
         child: GestureDetector(
           onTap: () async {
-            getUserCurrentLocation().then((value) async {
-              print("${value.latitude} ${value.longitude}");
+            Position position = await Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.high);
 
-              // marker added for current users location
-              _markers.add(
-                  Marker(
-                    markerId: const MarkerId("2"),
-                    position: LatLng(value.latitude, value.longitude),
-                    infoWindow: const InfoWindow(
-                      title: 'My Current Location',
-                    ),
-                  )
-              );
+            destination = LatLng(position.latitude, position.longitude);
 
-              // specified current users location
-              CameraPosition cameraPosition = CameraPosition(
-                target: LatLng(value.latitude, value.longitude),
-                zoom: 14,
-              );
+            markers.add(Marker(
+              markerId: MarkerId(
+                  "Longitude : ${position.longitude}, Latitude : ${position.latitude}"),
+              infoWindow: InfoWindow(
+                title:
+                    'Destination = Longitude : ${position.longitude}, Latitude : ${position.latitude}',
+              ),
+              position: destination,
+              icon: BitmapDescriptor.fromBytes(currentLocationMarker),
+            ));
 
-              final GoogleMapController controller = await _controller.future;
-              controller.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-              setState(() {
-              });
+            myMapController!.animateCamera(CameraUpdate.newCameraPosition(
+                CameraPosition(target: destination, zoom: 17)
+                //17 is new zoom level
+                ));
+
+            setState(() {
+              showSourceField = true;
             });
           },
           child: const CircleAvatar(
@@ -584,9 +582,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   late Uint8List markIcons;
+  late Uint8List currentLocationMarker;
 
   loadCustomMarker() async {
     markIcons = await loadAsset('assets/dest_marker.png', 100);
+  }
+
+  loadCurrentLocationMarker() async {
+    currentLocationMarker = await loadAsset('assets/location-pin.png', 100);
   }
 
   Future<Uint8List> loadAsset(String path, int width) async {
